@@ -1,0 +1,90 @@
+/* Base styles for the ZenMode component */
+.bg-app {
+    background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 30%, #8b5cf6 60%, #3b82f6 100%);
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.card:hover {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Responsive grid for zen activities */
+.zen-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Breathing animation styles */
+.breathing-circle {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* Button styles */
+.zen-button {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.zen-button:hover {
+    transform: scale(1.05);
+}
+
+.zen-button:active {
+    transform: scale(0.95);
+}
+
+/* Category buttons */
+.category-button {
+    padding: 8px 16px;
+    border-radius: 25px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-button.active {
+    background: #8b5cf6;
+    color: white;
+}
+
+.category-button:not(.active) {
+    background: white;
+    color: #374151;
+}
+
+.category-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .zen-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 16px;
+    }
+}
