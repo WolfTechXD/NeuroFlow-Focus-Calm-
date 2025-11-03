@@ -291,9 +291,9 @@ const PomodoroTimer: React.FC<PomodoroTimerProps> = ({ onSessionComplete }) => {
                         <div className="flex items-center gap-3">
                             <input
                                 type="range"
-                                min="5"
+                                min="1"
                                 max="60"
-                                step="5"
+                                step="1"
                                 value={workDuration}
                                 onChange={(e) => handleWorkDurationChange(Number(e.target.value))}
                                 disabled={isRunning}
