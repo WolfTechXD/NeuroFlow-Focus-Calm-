@@ -34,14 +34,22 @@ const Login: React.FC = () => {
 
             if (result.error) {
                 setError(result.error.message || 'Authentication failed');
+                setLoading(false);
             } else {
-                navigate('/dashboard');
+                // Wait a moment for auth state to update, then redirect
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 500);
             }
         } catch (err: any) {
             setError(err.message || 'An error occurred');
-        } finally {
             setLoading(false);
         }
+    };
+
+    const handleDemoMode = () => {
+        // Skip authentication and go straight to app
+        navigate('/app');
     };
 
     const handleGoogleSignIn = async () => {
@@ -188,18 +196,34 @@ const Login: React.FC = () => {
                         </button>
                     </form>
 
-                    <div className="mt-6 text-center">
+                    <div className="mt-6 text-center space-y-3">
                         <button
                             onClick={() => {
                                 setIsSignUp(!isSignUp);
                                 setError('');
                             }}
-                            className="text-gray-600"
+                            className="text-gray-600 block w-full"
                         >
                             {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
                             <span className="text-purple-600 font-semibold hover:underline">
                                 {isSignUp ? 'Sign In' : 'Sign Up'}
                             </span>
+                        </button>
+
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-200"></div>
+                            </div>
+                            <div className="relative flex justify-center text-xs">
+                                <span className="px-2 bg-white text-gray-400">or</span>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={handleDemoMode}
+                            className="text-purple-600 font-semibold hover:underline block w-full"
+                        >
+                            Continue without account (Demo Mode)
                         </button>
                     </div>
 
