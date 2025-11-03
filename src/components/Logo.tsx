@@ -73,8 +73,15 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', animated = false, classNam
                 />
             )}
 
-            {/* Split brain - left side pink, right side blue */}
-            <div className="relative z-10" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Split brain container */}
+            <div
+                className="relative z-10"
+                style={{
+                    width: dimension * 0.7,
+                    height: dimension * 0.7,
+                    position: 'relative'
+                }}
+            >
                 {/* Left half - Pink */}
                 <div
                     style={{
@@ -84,17 +91,11 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', animated = false, classNam
                         width: '50%',
                         height: '100%',
                         overflow: 'hidden',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start',
                     }}
                 >
                     <div
                         style={{
                             color: '#ec4899',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
                             filter: 'drop-shadow(0 2px 8px rgba(236, 72, 153, 0.4))',
                         }}
                     >
@@ -114,18 +115,12 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', animated = false, classNam
                         width: '50%',
                         height: '100%',
                         overflow: 'hidden',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
                     }}
                 >
                     <div
                         style={{
                             color: '#3b82f6',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transform: 'translateX(50%)',
+                            transform: `translateX(-${dimension * 0.35}px)`,
                             filter: 'drop-shadow(0 2px 8px rgba(59, 130, 246, 0.4))',
                         }}
                     >
@@ -141,8 +136,8 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', animated = false, classNam
                     style={{
                         position: 'absolute',
                         left: '50%',
-                        top: '50%',
-                        transform: 'translate(-50%, -50%)',
+                        top: '10%',
+                        transform: 'translateX(-50%)',
                         width: '2px',
                         height: '80%',
                         background: 'linear-gradient(to bottom, rgba(236, 72, 153, 0) 0%, rgba(168, 85, 247, 0.6) 50%, rgba(59, 130, 246, 0) 100%)',
