@@ -114,13 +114,15 @@ Upgrade to Premium to unlock this sound!`);
         }
 
         try {
-            const success = await audioManager.current.playSound(sound.id, sound.name, sound.category);
+            // Generate audio buffer source for this sound
+            const audioSrc = audioManager.current.generateSoundBuffer(sound.category, 10);
+            const success = await audioManager.current.playSound(sound.id, sound.name, sound.category, audioSrc);
             if (!success) {
-                alert(`🚫 Unable to play ${sound.name}. Please check your browser's audio settings and try again.`);
+                alert(`🚫 Unable to play ${sound.name}. Please check your browser's audio settings and try again.\n\nTip: Some browsers require you to interact with the page first before playing audio.`);
             }
         } catch (error) {
             console.error('Error playing sound:', error);
-            alert(`🚫 Audio Error: Unable to play ${sound.name}. Your browser may have blocked audio playback.`);
+            alert(`🚫 Audio Error: Unable to play ${sound.name}.\n\nYour browser may have blocked audio playback. Try clicking anywhere on the page first, then try again.`);
         }
     };
 
@@ -172,10 +174,9 @@ Upgrade to Premium to unlock this sound!`);
                     style={{ textAlign: 'center', marginBottom: '40px' }}
                 >
                     <h1 style={{
-                        color: 'white',
+                        color: colors.textPrimary,
                         fontSize: '2.5rem',
                         fontWeight: 'bold',
-                        textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
                         marginBottom: '10px'
                     }}>
                         🎵 Sound Library
@@ -193,7 +194,7 @@ Upgrade to Premium to unlock this sound!`);
                         )}
                     </h1>
                     <p style={{
-                        color: 'rgba(255,255,255,0.9)',
+                        color: colors.textSecondary,
                         fontSize: '1.1rem',
                         maxWidth: '600px',
                         margin: '0 auto'
@@ -215,7 +216,7 @@ Upgrade to Premium to unlock this sound!`);
                         style={{
                             padding: '10px 20px',
                             background: 'rgba(255,255,255,0.2)',
-                            color: 'white',
+                            color: colors.textPrimary,
                             border: '1px solid rgba(255,255,255,0.3)',
                             borderRadius: '8px',
                             fontWeight: '600',
@@ -271,7 +272,7 @@ Upgrade to Premium to unlock this sound!`);
                                     : 'rgba(255,255,255,0.2)',
                                 color: selectedCategory === category
                                     ? getCategoryColor(category)
-                                    : 'white',
+                                    : colors.textPrimary,
                                 backdropFilter: 'blur(10px)',
                                 transition: 'all 0.2s ease'
                             }}

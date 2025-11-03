@@ -1,6 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { ThemeProvider } from './context/ThemeContext'
+import { AuthProvider } from './context/AuthContext'
 import ThemedApp from './ThemedApp.tsx'
+import Welcome from './pages/Welcome'
+import GetStarted from './pages/GetStarted'
+import Login from './pages/Login'
+import PaymentHub from './pages/PaymentHub'
 import './index.css'
 
 console.log('NeuroFlow: Testing ZenMode with enhanced pink theme...');
@@ -23,7 +30,21 @@ if (!root) {
         const reactRoot = ReactDOM.createRoot(root);
         reactRoot.render(
             <React.StrictMode>
-                <ThemedApp />
+                <ThemeProvider>
+                    <AuthProvider>
+                        <BrowserRouter>
+                            <Routes>
+                                <Route path="/welcome" element={<Welcome />} />
+                                <Route path="/get-started" element={<GetStarted />} />
+                                <Route path="/login" element={<Login />} />
+                                <Route path="/payment" element={<PaymentHub />} />
+                                <Route path="/dashboard" element={<ThemedApp />} />
+                                <Route path="/" element={<ThemedApp />} />
+                                <Route path="*" element={<Navigate to="/" replace />} />
+                            </Routes>
+                        </BrowserRouter>
+                    </AuthProvider>
+                </ThemeProvider>
             </React.StrictMode>
         );
         console.log('✅ NeuroFlow app initialized successfully!');

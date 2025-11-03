@@ -9,6 +9,7 @@ import ThemeSelector from './components/ThemeSelector';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import LoadingScreen from './components/LoadingScreen';
+import PomodoroTimer from './components/PomodoroTimer';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { AppState, Task, TaskDifficulty } from './types/index';
 import { defaultCategories } from './utils/gameUtils';
@@ -297,6 +298,17 @@ ${plan === 'basic'
                 ))}
             </div>
 
+            {/* Pomodoro Timer */}
+            <PomodoroTimer onSessionComplete={() => {
+                setAppState(prev => ({
+                    ...prev,
+                    user: {
+                        ...prev.user,
+                        xp: prev.user.xp + 25
+                    }
+                }));
+            }} />
+
             {/* Active Quests */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -361,9 +373,9 @@ ${plan === 'basic'
                                         </div>
                                     </div>
                                 </div>
-                                <span className={`px-2 py-1 rounded text-xs ${task.priority === 'high' ? 'bg-red-500/20 text-red-300' :
-                                    task.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-300' :
-                                        'bg-blue-500/20 text-blue-300'
+                                <span className={`px-2 py-1 rounded text-xs font-semibold ${task.priority === 'high' ? 'bg-red-500/20 text-red-600' :
+                                    task.priority === 'medium' ? 'bg-orange-500/20 text-orange-600' :
+                                        'bg-green-500/20 text-green-600'
                                     }`}>
                                     {task.priority}
                                 </span>
