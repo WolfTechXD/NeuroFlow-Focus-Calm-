@@ -259,9 +259,21 @@ ${plan === 'basic'
                 className="text-center"
                 style={{ color: colors.textPrimary }}
             >
-                <div className="flex items-center justify-center gap-2 mb-2">
-                    <Brain className="w-8 h-8" style={{ color: colors.accent }} />
-                    <h1 className="text-3xl font-bold">NeuroFlow</h1>
+                <div className="flex items-center justify-between mb-2">
+                    <a href="/welcome" className="text-sm" style={{ color: colors.textSecondary, textDecoration: 'underline' }}>
+                        ← About NeuroFlow
+                    </a>
+                    <div className="flex items-center gap-2">
+                        <Brain className="w-8 h-8" style={{ color: colors.accent }} />
+                        <h1 className="text-3xl font-bold">NeuroFlow</h1>
+                    </div>
+                    <a href="/login" className="text-sm px-3 py-1 rounded-lg" style={{
+                        color: colors.textPrimary,
+                        background: colors.buttonPrimary,
+                        textDecoration: 'none'
+                    }}>
+                        Sign In
+                    </a>
                 </div>
                 <p className="text-lg" style={{ color: colors.textSecondary }}>
                     Hello, {appState.user.name}! 👋 Level {appState.user.level} • {appState.user.xp} XP

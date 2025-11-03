@@ -116,12 +116,20 @@ const Welcome: React.FC = () => {
                     transition={{ delay: 1.3 }}
                     className="text-center"
                 >
-                    <button
-                        onClick={() => navigate('/get-started')}
-                        className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white text-xl font-bold px-12 py-4 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all"
-                    >
-                        Get Started
-                    </button>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-4">
+                        <button
+                            onClick={() => navigate('/get-started')}
+                            className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white text-xl font-bold px-12 py-4 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all"
+                        >
+                            Get Started
+                        </button>
+                        <button
+                            onClick={() => navigate('/app')}
+                            className="bg-white text-purple-600 text-xl font-bold px-12 py-4 rounded-full shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all border-2 border-purple-500"
+                        >
+                            Try Demo
+                        </button>
+                    </div>
 
                     <p className="mt-4 text-gray-600">
                         Already have an account?{' '}

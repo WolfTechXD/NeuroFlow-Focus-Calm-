@@ -39,8 +39,9 @@ if (!root) {
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/payment" element={<PaymentHub />} />
                                 <Route path="/dashboard" element={<ThemedApp />} />
-                                <Route path="/" element={<ThemedApp />} />
-                                <Route path="*" element={<Navigate to="/" replace />} />
+                                <Route path="/app" element={<ThemedApp />} />
+                                <Route path="/" element={<Welcome />} />
+                                <Route path="*" element={<Navigate to="/welcome" replace />} />
                             </Routes>
                         </BrowserRouter>
                     </AuthProvider>
