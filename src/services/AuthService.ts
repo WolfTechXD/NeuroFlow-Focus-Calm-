@@ -73,21 +73,46 @@ export class AuthService {
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: `${window.location.origin}/dashboard`
+                    redirectTo: `${window.location.origin}/dashboard`,
+                    queryParams: {
+                        access_type: 'offline',
+                        prompt: 'consent',
+                    }
                 }
             });
+
+            if (error) {
+                if (error.message.includes('provider') || error.message.includes('not enabled')) {
+                    const customError: any = new Error(
+                        'Google sign-in is not configured yet. Please use email/password or try demo mode.'
+                    );
+                    customError.status = 400;
+                    return {
+                        user: null,
+                        session: null,
+                        error: customError as AuthError
+                    };
+                }
+            }
 
             return {
                 user: null,
                 session: null,
                 error: error
             };
-        } catch (err) {
+        } catch (err: any) {
             console.error('Google sign in error:', err);
+
+            const friendlyError: any = new Error(
+                err.message?.includes('provider') || err.message?.includes('not enabled')
+                    ? 'Google sign-in is not configured yet. Please use email/password or try demo mode.'
+                    : 'Failed to sign in with Google. Please try again or use email/password.'
+            );
+
             return {
                 user: null,
                 session: null,
-                error: err as AuthError
+                error: friendlyError as AuthError
             };
         }
     }

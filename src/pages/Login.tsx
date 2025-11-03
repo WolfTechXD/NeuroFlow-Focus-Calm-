@@ -61,6 +61,9 @@ const Login: React.FC = () => {
             if (result.error) {
                 setError(result.error.message || 'Google sign-in failed');
                 setLoading(false);
+            } else {
+                // OAuth flow initiated successfully, user will be redirected
+                // The auth state will be updated via the callback URL
             }
         } catch (err: any) {
             setError(err.message || 'An error occurred');
