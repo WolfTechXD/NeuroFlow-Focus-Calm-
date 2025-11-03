@@ -12,8 +12,12 @@
         "test:run": "vitest run"
     },
     "dependencies": {
+        "@capacitor/android": "^7.4.4",
+        "@capacitor/cli": "^7.4.4",
+        "@capacitor/core": "^7.4.4",
         "@google-cloud/text-to-speech": "^6.3.0",
         "@stripe/stripe-js": "^7.9.0",
+        "@supabase/supabase-js": "^2.78.0",
         "@types/web": "^0.0.271",
         "axios": "^1.12.2",
         "framer-motion": "^10.18.0",

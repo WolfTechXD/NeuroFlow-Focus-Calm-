@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { AppState, Task } from '../types/index';
 import { getTodayStats, calculateLevel, getXPProgress } from '../utils/gameUtils';
 import { useTheme } from '../context/ThemeContext';
+import PomodoroTimer from '../components/PomodoroTimer';
+import { getPriorityColor, getPriorityIcon } from '../utils/priorityColors';
 
 // Simple icon components to replace lucide-react
 const CheckCircle = () => <span>✅</span>;
@@ -54,11 +55,21 @@ const Dashboard: React.FC<DashboardProps> = ({ appState, onCompleteTask, onUpdat
                 className="text-center space-y-2"
             >
                 <div className="text-4xl">{appState.user.avatar}</div>
-                <h1 className="text-2xl font-bold text-gray-800">
+                <h1 className="text-2xl font-bold text-primary">
                     Welcome back, {appState.user.name}!
                 </h1>
-                <p className="text-gray-600">Ready to conquer some quests today? 🎯</p>
+                <p className="text-secondary">Ready to conquer some quests today? 🎯</p>
             </motion.div>
+
+            {/* Pomodoro Timer */}
+            <PomodoroTimer onSessionComplete={() => {
+                onUpdateState({
+                    user: {
+                        ...appState.user,
+                        xp: appState.user.xp + 25
+                    }
+                });
+            }} />
 
             {/* User Stats Card */}
             <motion.div

@@ -103,7 +103,7 @@ export class ThemeManager {
                         background: '#f8fafc',
                         surface: '#ffffff',
                         text: '#1e293b',
-                        textSecondary: '#64748b'
+                        textSecondary: '#475569'
                     },
                     gradients: {
                         primary: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -139,11 +139,11 @@ export class ThemeManager {
                     colors: {
                         primary: '#ec4899',
                         secondary: '#8b5cf6',
-                        accent: '#06b6d4',
+                        accent: '#ec4899',
                         background: '#fef7ed',
                         surface: '#ffffff',
-                        text: '#374151',
-                        textSecondary: '#6b7280'
+                        text: '#1e293b',
+                        textSecondary: '#334155'
                     },
                     gradients: {
                         primary: 'linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%)',

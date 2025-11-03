@@ -27,7 +27,7 @@ const themes: Record<ThemeType, ThemeColors> = {
     light: {
         background: 'linear-gradient(135deg, #fdf2f8 0%, #fce7f3 25%, #fbcfe8 50%, #dbeafe 75%, #bfdbfe 100%)',
         cardBackground: 'rgba(255, 255, 255, 0.8)',
-        textPrimary: '#0f172a',
+        textPrimary: '#1e293b',
         textSecondary: '#475569',
         accent: '#3b82f6',
         border: 'rgba(148, 163, 184, 0.3)',
@@ -47,9 +47,9 @@ const themes: Record<ThemeType, ThemeColors> = {
     colorful: {
         background: 'linear-gradient(135deg, rgb(251, 207, 232) 0%, rgb(252, 165, 165) 25%, rgb(147, 197, 253) 75%, rgb(59, 130, 246) 100%)',
         cardBackground: 'rgba(255, 255, 255, 0.85)',
-        textPrimary: '#0f172a',
-        textSecondary: '#1e293b',
-        accent: '#fbbf24',
+        textPrimary: '#1e293b',
+        textSecondary: '#334155',
+        accent: '#ec4899',
         border: 'rgba(255, 255, 255, 0.3)',
         buttonPrimary: 'linear-gradient(135deg, #f472b6 0%, #3b82f6 100%)',
         buttonSecondary: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%)'

@@ -81,11 +81,11 @@
         /* Enhanced Colorful Mode */
         --color-primary: #ec4899;
         --color-secondary: #8b5cf6;
-        --color-accent: #06b6d4;
+        --color-accent: #ec4899;
         --color-background: #fef7ed;
         --color-surface: #ffffff;
-        --color-text: #374151;
-        --color-text-secondary: #6b7280;
+        --color-text: #1e293b;
+        --color-text-secondary: #334155;
 
         --gradient-primary: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%);
         --gradient-secondary: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
@@ -99,9 +99,9 @@
         --bg-gradient-from: 254 215 170;
         --bg-gradient-via: 252 165 165;
         --bg-gradient-to: 196 181 253;
-        --text-primary: 55 65 81;
-        --text-secondary: 75 85 99;
-        --text-muted: 107 114 128;
+        --text-primary: 30 41 59;
+        --text-secondary: 51 65 85;
+        --text-muted: 71 85 105;
         --card-bg: 255 255 255;
         --accent-primary: 239 68 68;
         --accent-secondary: 168 85 247;
