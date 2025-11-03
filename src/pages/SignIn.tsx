@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useGoogleAuthDemo } from '../hooks/useGoogleAuth';
+import { useAuth } from '../context/AuthContext';
 
 // Simple icon components
 const Mail = () => <span>📧</span>;
@@ -22,29 +22,24 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn, onGoogleSignIn, onSwitchToSig
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+    const [errors, setErrors] = useState<{ email?: string; password?: string; google?: string }>({});
+    const [googleLoading, setGoogleLoading] = useState(false);
+    const { signInWithGoogle: authSignInWithGoogle } = useAuth();
 
-    // Google Auth integration
-    const { signInWithGoogle } = useGoogleAuthDemo(
-        (user) => {
-            // Handle successful Google sign in - directly call the handler with Google user data
-            handleGoogleAuth(user);
-        },
-        (error) => {
+    const handleGoogleSignIn = async () => {
+        setGoogleLoading(true);
+        setErrors({});
+        try {
+            const { error } = await authSignInWithGoogle();
+            if (error) {
+                setErrors({ google: error.message || 'Failed to sign in with Google' });
+            }
+        } catch (error: any) {
             console.error('Google sign in error:', error);
+            setErrors({ google: error.message || 'An unexpected error occurred' });
+        } finally {
+            setGoogleLoading(false);
         }
-    );
-
-    const handleGoogleAuth = (user: any) => {
-        // Create a simulated email/password flow for Google users
-        const googleEmail = user.email;
-        const googleName = user.name;
-
-        // Update the form state to show Google user info
-        setEmail(googleEmail);
-
-        // Directly call the sign in handler with Google user data
-        onSignIn(googleEmail, 'google-auth-token');
     };
 
     const validateForm = () => {
@@ -164,24 +159,28 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn, onGoogleSignIn, onSwitchToSig
                     </form>
 
                     {/* Google Sign In */}
-                    {onGoogleSignIn && (
-                        <>
-                            <div className="my-6 flex items-center">
-                                <div className="flex-1 border-t border-themed"></div>
-                                <span className="px-4 text-sm text-muted">or</span>
-                                <div className="flex-1 border-t border-themed"></div>
-                            </div>
+                    <>
+                        <div className="my-6 flex items-center">
+                            <div className="flex-1 border-t border-themed"></div>
+                            <span className="px-4 text-sm text-muted">or</span>
+                            <div className="flex-1 border-t border-themed"></div>
+                        </div>
 
-                            <button
-                                onClick={signInWithGoogle}
-                                disabled={isLoading}
-                                className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                <Google />
-                                Continue with Google
-                            </button>
-                        </>
-                    )}
+                        {errors.google && (
+                            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <p className="text-red-700 text-sm">{errors.google}</p>
+                            </div>
+                        )}
+
+                        <button
+                            onClick={handleGoogleSignIn}
+                            disabled={isLoading || googleLoading}
+                            className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <Google />
+                            {googleLoading ? 'Connecting to Google...' : 'Continue with Google'}
+                        </button>
+                    </>
 
                     {/* Divider */}
                     <div className="my-6 flex items-center">
