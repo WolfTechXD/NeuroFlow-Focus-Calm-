@@ -73,24 +73,80 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', animated = false, classNam
                 />
             )}
 
-            {/* Brain icon with gradient */}
-            <div
-                className="relative z-10"
-                style={{
-                    background: 'linear-gradient(135deg, #ec4899 0%, #a855f7 50%, #3b82f6 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <Brain
-                    size={dimension * 0.7}
-                    strokeWidth={2}
+            {/* Split brain - left side pink, right side blue */}
+            <div className="relative z-10" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* Left half - Pink */}
+                <div
                     style={{
-                        filter: 'drop-shadow(0 2px 8px rgba(168, 85, 247, 0.3))',
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        width: '50%',
+                        height: '100%',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-start',
+                    }}
+                >
+                    <div
+                        style={{
+                            color: '#ec4899',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            filter: 'drop-shadow(0 2px 8px rgba(236, 72, 153, 0.4))',
+                        }}
+                    >
+                        <Brain
+                            size={dimension * 0.7}
+                            strokeWidth={2}
+                        />
+                    </div>
+                </div>
+
+                {/* Right half - Blue */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        right: 0,
+                        top: 0,
+                        width: '50%',
+                        height: '100%',
+                        overflow: 'hidden',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                    }}
+                >
+                    <div
+                        style={{
+                            color: '#3b82f6',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            transform: 'translateX(50%)',
+                            filter: 'drop-shadow(0 2px 8px rgba(59, 130, 246, 0.4))',
+                        }}
+                    >
+                        <Brain
+                            size={dimension * 0.7}
+                            strokeWidth={2}
+                        />
+                    </div>
+                </div>
+
+                {/* Center glow line */}
+                <div
+                    style={{
+                        position: 'absolute',
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '2px',
+                        height: '80%',
+                        background: 'linear-gradient(to bottom, rgba(236, 72, 153, 0) 0%, rgba(168, 85, 247, 0.6) 50%, rgba(59, 130, 246, 0) 100%)',
+                        filter: 'blur(2px)',
                     }}
                 />
             </div>
