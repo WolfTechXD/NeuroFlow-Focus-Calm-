@@ -96,12 +96,11 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', animated = false, classNam
                     <div
                         style={{
                             color: '#ec4899',
-                            filter: 'drop-shadow(0 2px 8px rgba(236, 72, 153, 0.4))',
                         }}
                     >
                         <Brain
                             size={dimension * 0.7}
-                            strokeWidth={2}
+                            strokeWidth={2.5}
                         />
                     </div>
                 </div>
@@ -121,12 +120,11 @@ const Logo: React.FC<LogoProps> = ({ size = 'medium', animated = false, classNam
                         style={{
                             color: '#3b82f6',
                             transform: `translateX(-${dimension * 0.35}px)`,
-                            filter: 'drop-shadow(0 2px 8px rgba(59, 130, 246, 0.4))',
                         }}
                     >
                         <Brain
                             size={dimension * 0.7}
-                            strokeWidth={2}
+                            strokeWidth={2.5}
                         />
                     </div>
                 </div>
