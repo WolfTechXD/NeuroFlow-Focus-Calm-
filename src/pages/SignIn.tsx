@@ -1,6 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+declare global {
+    interface Window {
+        google?: {
+            accounts: {
+                id: {
+                    initialize: (config: any) => void;
+                    prompt: () => void;
+                };
+            };
+        };
+    }
+}
 
 // Simple icon components
 const Mail = () => <span>📧</span>;
@@ -25,14 +39,53 @@ const SignIn: React.FC<SignInProps> = ({ onSignIn, onGoogleSignIn, onSwitchToSig
     const [errors, setErrors] = useState<{ email?: string; password?: string; google?: string }>({});
     const [googleLoading, setGoogleLoading] = useState(false);
     const { signInWithGoogle: authSignInWithGoogle } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+        if (!clientId || !window.google) {
+            return;
+        }
+
+        window.google.accounts.id.initialize({
+            client_id: clientId,
+            callback: handleGoogleCredentialResponse,
+        });
+    }, []);
+
+    const handleGoogleCredentialResponse = async (response: any) => {
+        setGoogleLoading(true);
+        setErrors({});
+        try {
+            const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
+
+            navigate('/dashboard', {
+                state: {
+                    googleUser: {
+                        email: payload.email,
+                        name: payload.name,
+                        picture: payload.picture
+                    }
+                }
+            });
+        } catch (error: any) {
+            console.error('Google sign in error:', error);
+            setErrors({ google: error.message || 'Failed to sign in with Google' });
+        } finally {
+            setGoogleLoading(false);
+        }
+    };
 
     const handleGoogleSignIn = async () => {
         setGoogleLoading(true);
         setErrors({});
         try {
-            const { error } = await authSignInWithGoogle();
-            if (error) {
-                setErrors({ google: error.message || 'Failed to sign in with Google' });
+            if (window.google) {
+                window.google.accounts.id.prompt();
+            } else {
+                setErrors({ google: 'Google Sign-In not loaded. Please refresh the page.' });
             }
         } catch (error: any) {
             console.error('Google sign in error:', error);

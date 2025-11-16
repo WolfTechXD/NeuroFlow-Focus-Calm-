@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { supabase } from '../config/supabase';
 
 export interface GoogleUser {
@@ -10,45 +10,104 @@ export interface GoogleUser {
     id?: string;
 }
 
+declare global {
+    interface Window {
+        google?: {
+            accounts: {
+                id: {
+                    initialize: (config: any) => void;
+                    prompt: () => void;
+                    renderButton: (element: HTMLElement, config: any) => void;
+                };
+            };
+        };
+    }
+}
+
 export const useGoogleAuth = (onSuccess: (user: GoogleUser) => void, onError?: (error: string) => void) => {
-    const signInWithGoogle = useCallback(async () => {
+    const handleCredentialResponse = useCallback(async (response: any) => {
         try {
-            const { data, error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: window.location.origin,
-                    queryParams: {
-                        access_type: 'offline',
-                        prompt: 'consent',
-                    },
-                }
-            });
+            const credential = response.credential;
+            const payload = JSON.parse(atob(credential.split('.')[1]));
 
-            if (error) {
-                console.error('Google sign-in error:', error);
-                onError?.(error.message || 'Failed to sign in with Google');
-                return;
-            }
+            const googleUser: GoogleUser = {
+                id: payload.sub,
+                email: payload.email,
+                name: payload.name,
+                picture: payload.picture,
+                given_name: payload.given_name,
+                family_name: payload.family_name,
+            };
 
-            if (data) {
-                const { data: { user } } = await supabase.auth.getUser();
-                if (user) {
-                    const googleUser: GoogleUser = {
-                        id: user.id,
-                        email: user.email || '',
-                        name: user.user_metadata?.full_name || user.user_metadata?.name || '',
-                        picture: user.user_metadata?.avatar_url || user.user_metadata?.picture,
-                        given_name: user.user_metadata?.given_name,
-                        family_name: user.user_metadata?.family_name,
-                    };
-                    onSuccess(googleUser);
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: googleUser.email,
+                    password: `google_${payload.sub}`
+                });
+
+                if (error && error.message.includes('Invalid login')) {
+                    const { error: signUpError } = await supabase.auth.signUp({
+                        email: googleUser.email,
+                        password: `google_${payload.sub}`,
+                        options: {
+                            data: {
+                                full_name: googleUser.name,
+                                avatar_url: googleUser.picture,
+                                provider: 'google',
+                            }
+                        }
+                    });
+
+                    if (signUpError) {
+                        throw signUpError;
+                    }
                 }
+
+                onSuccess(googleUser);
+            } catch (supabaseError: any) {
+                console.error('Supabase error:', supabaseError);
+                onSuccess(googleUser);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Google authentication error:', error);
-            onError?.('An unexpected error occurred during Google sign-in');
+            onError?.(error.message || 'An unexpected error occurred during Google sign-in');
         }
     }, [onSuccess, onError]);
+
+    useEffect(() => {
+        const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+        if (!clientId) {
+            console.warn('Google Client ID not configured');
+            return;
+        }
+
+        const initializeGoogle = () => {
+            if (window.google) {
+                window.google.accounts.id.initialize({
+                    client_id: clientId,
+                    callback: handleCredentialResponse,
+                });
+            }
+        };
+
+        if (window.google) {
+            initializeGoogle();
+        } else {
+            const script = document.querySelector('script[src="https://accounts.google.com/gsi/client"]');
+            if (script) {
+                script.addEventListener('load', initializeGoogle);
+            }
+        }
+    }, [handleCredentialResponse]);
+
+    const signInWithGoogle = useCallback(() => {
+        if (window.google) {
+            window.google.accounts.id.prompt();
+        } else {
+            onError?.('Google Sign-In not loaded');
+        }
+    }, [onError]);
 
     return {
         signInWithGoogle,

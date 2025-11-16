@@ -1,6 +1,19 @@
 import { supabase } from '../config/supabase';
 import type { User, Session, AuthError } from '@supabase/supabase-js';
 
+declare global {
+    interface Window {
+        google?: {
+            accounts: {
+                id: {
+                    initialize: (config: any) => void;
+                    prompt: () => void;
+                };
+            };
+        };
+    }
+}
+
 export interface AuthResponse {
     user: User | null;
     session: Session | null;
@@ -69,52 +82,47 @@ export class AuthService {
     }
 
     async signInWithGoogle(): Promise<AuthResponse> {
-        try {
-            const { data, error } = await supabase.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: `${window.location.origin}/dashboard`,
-                    queryParams: {
-                        access_type: 'offline',
-                        prompt: 'consent',
-                    }
-                }
-            });
+        return new Promise((resolve) => {
+            try {
+                const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-            if (error) {
-                if (error.message.includes('provider') || error.message.includes('not enabled')) {
-                    const customError: any = new Error(
-                        'Google sign-in is not configured yet. Please use email/password or try demo mode.'
-                    );
-                    customError.status = 400;
-                    return {
+                if (!clientId) {
+                    const error: any = new Error('Google Client ID not configured');
+                    resolve({
                         user: null,
                         session: null,
-                        error: customError as AuthError
-                    };
+                        error: error as AuthError
+                    });
+                    return;
                 }
+
+                if (!window.google) {
+                    const error: any = new Error('Google Sign-In not loaded');
+                    resolve({
+                        user: null,
+                        session: null,
+                        error: error as AuthError
+                    });
+                    return;
+                }
+
+                window.google.accounts.id.prompt();
+
+                const error: any = new Error('Google Sign-In initiated');
+                resolve({
+                    user: null,
+                    session: null,
+                    error: error as AuthError
+                });
+            } catch (err: any) {
+                console.error('Google sign in error:', err);
+                resolve({
+                    user: null,
+                    session: null,
+                    error: err as AuthError
+                });
             }
-
-            return {
-                user: null,
-                session: null,
-                error: error
-            };
-        } catch (err: any) {
-            console.error('Google sign in error:', err);
-
-            const friendlyError: any = new Error(
-                err.message?.includes('provider') || err.message?.includes('not enabled')
-                    ? 'Google sign-in is not configured yet. Please use email/password or try demo mode.'
-                    : 'Failed to sign in with Google. Please try again or use email/password.'
-            );
-
-            return {
-                user: null,
-                session: null,
-                error: friendlyError as AuthError
-            };
-        }
+        });
     }
 
     async signOut(): Promise<{ error: AuthError | null }> {
