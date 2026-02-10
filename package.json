@@ -19,7 +19,7 @@
         "@stripe/stripe-js": "^7.9.0",
         "@supabase/supabase-js": "^2.78.0",
         "@types/web": "^0.0.271",
-        "axios": "^1.12.2",
+        "axios": "^1.13.5",
         "framer-motion": "^10.18.0",
         "lucide-react": "^0.544.0",
         "react": "^18.3.1",
